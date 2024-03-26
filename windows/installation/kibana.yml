@@ -1,0 +1,25 @@
+server.host: "0.0.0.0"
+server.publicBaseUrl: "https://kibana.verifa.io"
+server.name: "kibana.verifa.io"
+server.ssl:
+  enabled: false
+  certificate: /path/to/your/server.crt
+  key: /path/to/your/server.key
+elasticsearch:
+  hosts: ["http://localhost:9200"]
+  username: "kibana_system"
+  password: "pass"
+  ssl.certificate: /path/to/your/client.crt
+  ssl.key: /path/to/your/client.key
+  ssl.certificateAuthorities: [ "/path/to/your/CA.pem" ]
+logging.appenders.default:
+  type: rolling-file
+  fileName: /var/logs/kibana.log
+  policy:
+   type: size-limit
+   size: 256mb
+ strategy:
+   type: numeric
+   max: 10
+ layout:
+   type: json
