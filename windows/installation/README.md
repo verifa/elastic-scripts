@@ -207,3 +207,35 @@ If you lose the initial password (printed after auto-config):
 ```powershell
 bin\elasticsearch-reset-password -u elastic
 ```
+
+## Using your own p12/PFX certificates
+
+For the HTTPS REST API the settings are:
+
+```yaml
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.keystore.path: http.p12
+```
+
+Add the password for your private key to the secure settings in Elasticsearch.
+
+```powershell
+./bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+```
+
+For transport (internal traffic):
+
+```yaml
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate 
+xpack.security.transport.ssl.client_authentication: required
+xpack.security.transport.ssl.keystore.path: elastic-certificates.p12
+xpack.security.transport.ssl.truststore.path: elastic-certificates.p12
+```
+
+If you entered a password when creating the node certificate, run the following commands to store the password in the Elasticsearch keystore:
+
+```yaml
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password 
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+```
