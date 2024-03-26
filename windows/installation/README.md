@@ -186,7 +186,15 @@ Now just run Kibana and let it self configure:
 .\bin\kibana.bat
 ```
 
-This config isn't quite ideal since it only points to the localhost ES instance! But it's ok for our use. Also note the listener is only on localhost.
+Get token for Kibana from an ES node:
+
+```powershell
+bin/elasticsearch-create-enrollment-token -s node
+```
+
+Then you can browse to the local running Kibana with browser and complete the steps in the browser window.
+
+The  "auto-config" isn't quite ideal since it only points to the localhost ES instance! But it's ok for our use. Also note the listener is only on localhost, but it's a start.
 
 # Misc
 
