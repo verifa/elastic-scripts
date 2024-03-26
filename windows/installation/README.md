@@ -55,7 +55,7 @@ bin\elasticsearch-service.bat start
 To make the service start automatically, open up the "manager" and change the `Startup type`:
 
 ```powershell
-bin\elastisearch-service.bat manager
+bin\elasticsearch-service.bat manager
 ```
 
 ### Change the listening host/ip
