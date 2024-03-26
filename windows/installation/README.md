@@ -17,6 +17,8 @@ Or disable the Windows Firewall if just testing or you don't utilize the built-i
 
 Let's install a cluster in a fairly manual fashion.
 
+> **SECURITY NOTE:** if you want to do a better job security-wise, please first create a dedicated user for ElasticSearch and unzip the installation files into a folder owned by that user. Later you also need to change that the service runs as your dedicated user. Then you can follow along the instructions by logging in as that user instead of an administrative user.
+
 First RDP to the first node and run Powershell **as Admin**. Then I've created some simple scripts to speed up the installation.
 
 Download the `.zip` and unzip it in root of the C drive:
@@ -169,6 +171,18 @@ cluster.initial_master_nodes:
 
 In the above config the `initial_master_nodes` are defined, this can be removed after the node is up and running. It's best practice to remove.
 
+### Switching Roles
+
+Depending on your cluster setup, you might want to make one of the initial nodes that had the default roles (all roles) to act only as a master. Before you do this you must make sure any indices are moved away from the node (as it won't be a data node going forward):
+
+```powershell
+bin/elasticsearch-node.bat repurpose
+```
+
+After this you can change the role configuration and reload the node.
+
+This also applies in some other role changes, but ElasticSearch process itself typically will tell you about this.
+
 ## Kibana
 
 Download the installer and unzip:
@@ -194,7 +208,30 @@ bin/elasticsearch-create-enrollment-token -s node
 
 Then you can browse to the local running Kibana with browser and complete the steps in the browser window.
 
-The  "auto-config" isn't quite ideal since it only points to the localhost ES instance! But it's ok for our use. Also note the listener is only on localhost, but it's a start.
+The  "auto-config" isn't quite ideal but it can be easy to get something running. For a more serious example, see the [kibana.yml](./kibana.yml) in this folder.
+
+### Using your own p12/PFX cert
+
+Configure the cert:
+
+```powershell
+elasticsearch.ssl.keystore.path = "certs/mycert.p12"
+```
+
+If you use a p12/pfx cert with a password set, you must provide the password which can be done securely using the `kibana-keystore`:
+
+```powershell
+bin/kibana-keystore create
+bin/kibana-keystore add elasticsearch.ssl.keystore.password
+```
+
+### Storing Password in Keystore instead of plain-text
+
+Like in above, once `kibana-keystore` is created it can be used to store config values:
+
+```powershell
+bin/kibana-keystore add elasticsearch.password
+```
 
 # Misc
 

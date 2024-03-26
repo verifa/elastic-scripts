@@ -11,15 +11,15 @@ elasticsearch:
   password: "pass"
   ssl.certificate: /path/to/your/client.crt
   ssl.key: /path/to/your/client.key
-  ssl.certificateAuthorities: [ "/path/to/your/CA.pem" ]
+  ssl.certificateAuthorities: ["/path/to/your/CA.pem"]
 logging.appenders.default:
   type: rolling-file
   fileName: /var/logs/kibana.log
   policy:
-   type: size-limit
-   size: 256mb
- strategy:
-   type: numeric
-   max: 10
- layout:
-   type: json
+    type: size-limit
+    size: 256mb
+  strategy:
+    type: numeric
+    max: 10
+  layout:
+    type: json
